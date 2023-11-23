@@ -7,8 +7,8 @@
 // -------------------------------------------------- //
 // YOU CAN USE AND MODIFY THESE CONSTANTS HERE
 constexpr bool INIT_ON_FIRST_PREDICTION = true;
-constexpr double INIT_POS_STD = 0;
-constexpr double INIT_VEL_STD = 0;
+constexpr double INIT_POS_STD = 10;
+constexpr double INIT_VEL_STD = 10;
 constexpr double ACCEL_STD = 0.1;
 constexpr double GPS_POS_STD = 3.0;
 // -------------------------------------------------- //
@@ -86,6 +86,22 @@ void KalmanFilter::handleGPSMeasurement(GPSMeasurement meas)
         // Hint: You can use the constants: GPS_POS_STD
         // ----------------------------------------------------------------------- //
         // ENTER YOUR CODE HERE 
+        VectorXd z = Vector2d();
+        MatrixXd H = MatrixXd(2,4);
+        MatrixXd R = Matrix2d::Zero();
+
+        z << meas.x,meas.y;
+        H << 1,0,0,0,0,1,0,0;
+        R(0,0) = GPS_POS_STD*GPS_POS_STD;
+        R(1,1) = GPS_POS_STD*GPS_POS_STD;
+
+        VectorXd z_hat = H * state;
+        VectorXd y = z - z_hat;
+        MatrixXd S = H * cov * H.transpose() + R;
+        MatrixXd K = cov*H.transpose()*S.inverse();
+
+        state = state + K*y;
+        cov = (MatrixXd::Identity(4,4) - K*H) * cov;
 
 
         // ----------------------------------------------------------------------- //
