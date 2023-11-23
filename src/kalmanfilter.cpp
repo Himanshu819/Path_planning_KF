@@ -6,9 +6,9 @@
 
 // -------------------------------------------------- //
 // YOU CAN USE AND MODIFY THESE CONSTANTS HERE
-constexpr bool INIT_ON_FIRST_PREDICTION = true;
-constexpr double INIT_POS_STD = 10;
-constexpr double INIT_VEL_STD = 10;
+constexpr bool INIT_ON_FIRST_PREDICTION = false;
+constexpr double INIT_POS_STD = 0;
+constexpr double INIT_VEL_STD = 15;
 constexpr double ACCEL_STD = 0.1;
 constexpr double GPS_POS_STD = 3.0;
 // -------------------------------------------------- //
@@ -120,6 +120,14 @@ void KalmanFilter::handleGPSMeasurement(GPSMeasurement meas)
         // ENTER YOUR CODE HERE
             VectorXd state = Vector4d::Zero();
             MatrixXd cov = Matrix4d::Zero();
+
+ 
+            state(0) = meas.x;
+            state(1) = meas.y;
+            cov(0,0) = GPS_POS_STD*GPS_POS_STD;
+            cov(1,1) = GPS_POS_STD*GPS_POS_STD;
+            cov(2,2) = INIT_VEL_STD*INIT_VEL_STD;
+            cov(3,3) = INIT_VEL_STD*INIT_VEL_STD;
 
 
             setState(state);
