@@ -1,8 +1,3 @@
-// ------------------------------------------------------------------------------- //
-// Advanced Kalman Filtering and Sensor Fusion Course - Unscented Kalman Filter
-//
-// ####### STUDENT FILE #######
-//
 // Usage:
 // -Rename this file to "kalmanfilter.cpp" if you want to use this code.
 
